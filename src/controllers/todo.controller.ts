@@ -1,4 +1,5 @@
 import { Request, Response } from "express";
+import { CreateTodoDto, DeleteTodoDto, UpdateTodoDto } from "../dtos/todo.dto";
 import {
   createTodo,
   deleteTodo,
@@ -16,8 +17,9 @@ export const create = async (req: Request, res: Response): Promise<void> => {
     }
 
     const { title } = req.body;
+    const createTodoDto: CreateTodoDto = { userId, title };
+    const todo = await createTodo(createTodoDto.userId, createTodoDto.title);
 
-    const todo = await createTodo(userId, title);
     res.status(201).json(todo);
   } catch (error) {
     const errorMessage = (error as Error).message;
@@ -44,8 +46,13 @@ export const list = async (req: Request, res: Response): Promise<void> => {
 export const update = async (req: Request, res: Response): Promise<void> => {
   try {
     const { id, completed, title } = req.body;
+    const updateTodoDto: UpdateTodoDto = { id, completed, title };
+    const todo = await updateTodo(
+      updateTodoDto.id,
+      updateTodoDto.completed,
+      updateTodoDto.title
+    );
 
-    const todo = await updateTodo(id, completed, title);
     res.status(200).json(todo);
   } catch (error) {
     res.status(400).json({ message: (error as Error).message });
@@ -54,9 +61,10 @@ export const update = async (req: Request, res: Response): Promise<void> => {
 
 export const remove = async (req: Request, res: Response): Promise<void> => {
   try {
-    const todoId = Number(req.query.id);
+    const id = Number(req.query.id);
+    const deleteTodoDto: DeleteTodoDto = { id };
+    const todo = await deleteTodo(deleteTodoDto.id);
 
-    const todo = await deleteTodo(todoId);
     res.status(200).json(todo);
   } catch (error) {
     res.status(400).json({ message: (error as Error).message });
