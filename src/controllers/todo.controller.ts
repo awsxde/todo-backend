@@ -11,6 +11,7 @@ import {
   getTodos,
   updateTodo,
 } from "../services/todo.service";
+import { validateTodoStatus } from "../utils/todo-validation.utils";
 
 export const create = async (req: Request, res: Response): Promise<void> => {
   try {
@@ -20,6 +21,9 @@ export const create = async (req: Request, res: Response): Promise<void> => {
       expiresAt: req.body.expiresAt,
       status: req.body.status,
     };
+
+    validateTodoStatus(status);
+
     const todo = await createTodo(userId, title, expiresAt, status);
 
     res.status(201).json(todo);
@@ -45,6 +49,9 @@ export const list = async (req: Request, res: Response): Promise<void> => {
 export const update = async (req: Request, res: Response): Promise<void> => {
   try {
     const { id, completed, title, expiresAt, status }: UpdateTodoDto = req.body;
+
+    validateTodoStatus(status);
+
     const todo = await updateTodo(id, completed, title, expiresAt, status);
 
     res.status(200).json(todo);

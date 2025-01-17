@@ -7,7 +7,7 @@ export const createTodo = async (
   status?: string
 ) => {
   return await prisma.todo.create({
-    data: { title, userId, expiresAt, status: status ?? "pending" },
+    data: { title, userId, expiresAt, status: status || "pending" },
   });
 };
 
