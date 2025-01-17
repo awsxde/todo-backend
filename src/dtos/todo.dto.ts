@@ -11,7 +11,6 @@ export interface ListTodoDto {
 
 export interface UpdateTodoDto {
   id: number;
-  completed: boolean;
   title: string;
   expiresAt?: Date;
   status?: string;

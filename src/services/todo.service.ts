@@ -17,14 +17,13 @@ export const getTodos = async (userId: number) => {
 
 export const updateTodo = async (
   todoId: number,
-  completed: boolean,
   title: string,
   expiresAt?: Date,
   status?: string
 ) => {
   return await prisma.todo.update({
     where: { id: todoId },
-    data: { title, completed, expiresAt, status },
+    data: { title, expiresAt, status },
   });
 };
 

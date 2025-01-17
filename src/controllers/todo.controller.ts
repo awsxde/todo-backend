@@ -48,11 +48,11 @@ export const list = async (req: Request, res: Response): Promise<void> => {
 
 export const update = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { id, completed, title, expiresAt, status }: UpdateTodoDto = req.body;
+    const { id, title, expiresAt, status }: UpdateTodoDto = req.body;
 
     validateTodoStatus(status);
 
-    const todo = await updateTodo(id, completed, title, expiresAt, status);
+    const todo = await updateTodo(id, title, expiresAt, status);
 
     res.status(200).json(todo);
   } catch (error) {
