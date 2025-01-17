@@ -1,8 +1,13 @@
 import { prisma } from "../utils/prismaClient";
 
-export const createTodo = async (userId: number, title: string) => {
+export const createTodo = async (
+  userId: number,
+  title: string,
+  expiresAt?: Date,
+  status?: string
+) => {
   return await prisma.todo.create({
-    data: { title, userId },
+    data: { title, userId, expiresAt, status: status ?? "pending" },
   });
 };
 
@@ -13,11 +18,13 @@ export const getTodos = async (userId: number) => {
 export const updateTodo = async (
   todoId: number,
   completed: boolean,
-  title: string
+  title: string,
+  expiresAt?: Date,
+  status?: string
 ) => {
   return await prisma.todo.update({
     where: { id: todoId },
-    data: { title, completed },
+    data: { title, completed, expiresAt, status },
   });
 };
 
