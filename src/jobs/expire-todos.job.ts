@@ -20,6 +20,7 @@ const expireTodos = async () => {
   }
 };
 
+// run auto expiring todos function every night at 1am
 cron.schedule("0 1 * * *", async () => {
   await expireTodos();
   console.log("Scheduled task completed at:", new Date().toLocaleString());
