@@ -12,7 +12,6 @@ export const getTodos = async (userId: number) => {
 
 export const updateTodo = async (
   todoId: number,
-  userId: number,
   completed: boolean,
   title: string
 ) => {
@@ -22,7 +21,7 @@ export const updateTodo = async (
   });
 };
 
-export const deleteTodo = async (todoId: number, userId: number) => {
+export const deleteTodo = async (todoId: number) => {
   return await prisma.todo.delete({
     where: { id: todoId },
   });
