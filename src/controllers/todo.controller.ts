@@ -44,14 +44,8 @@ export const list = async (req: Request, res: Response): Promise<void> => {
 export const update = async (req: Request, res: Response): Promise<void> => {
   try {
     const { id, completed, title } = req.body;
-    const userId = req.userId;
 
-    if (!userId) {
-      res.status(400).json({ message: "User ID is required" });
-      return;
-    }
-
-    const todo = await updateTodo(id, userId, completed, title);
+    const todo = await updateTodo(id, completed, title);
     res.status(200).json(todo);
   } catch (error) {
     res.status(400).json({ message: (error as Error).message });
@@ -61,14 +55,8 @@ export const update = async (req: Request, res: Response): Promise<void> => {
 export const remove = async (req: Request, res: Response): Promise<void> => {
   try {
     const todoId = Number(req.query.id);
-    const userId = req.userId;
 
-    if (!userId) {
-      res.status(400).json({ message: "User ID is required" });
-      return;
-    }
-
-    const todo = await deleteTodo(todoId, userId);
+    const todo = await deleteTodo(todoId);
     res.status(200).json(todo);
   } catch (error) {
     res.status(400).json({ message: (error as Error).message });
