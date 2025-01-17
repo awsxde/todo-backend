@@ -141,7 +141,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\"id\": 1, \"title\": \"Buy groceries and cook dinner\", \"completed\": true, \"expiresAt\": \"2025-01-21T12:00:00Z\", \"status\": \"completed\"}"
+              "raw": "{\"id\": 1, \"title\": \"Buy groceries and cook dinner\", \"expiresAt\": \"2025-01-21T12:00:00Z\", \"status\": \"completed\"}"
             },
             "url": {
               "raw": "{{baseUrl}}/todos",
