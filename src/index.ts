@@ -1,5 +1,6 @@
 import dotenv from "dotenv";
 import express from "express";
+import "./jobs/expire-todos.job";
 import authRoutes from "./routes/auth.routes";
 import todoRoutes from "./routes/todo.routes";
 
