@@ -3,6 +3,10 @@ export interface CreateTodoDto {
   title: string;
 }
 
+export interface ListTodoDto {
+  userId: number;
+}
+
 export interface UpdateTodoDto {
   id: number;
   completed: boolean;
