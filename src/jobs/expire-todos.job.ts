@@ -1,5 +1,5 @@
 import cron from "node-cron";
-import { prisma } from "../utils/prismaClient";
+import { prisma } from "../utils/prisma-client.utils";
 
 const expireTodos = async () => {
   console.log("Running expire todos job...");

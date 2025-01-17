@@ -1,4 +1,4 @@
-import { prisma } from "../utils/prismaClient";
+import { prisma } from "../utils/prisma-client.utils";
 
 export const createTodo = async (
   userId: number,
