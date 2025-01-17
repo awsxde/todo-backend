@@ -53,7 +53,9 @@ export const update = async (req: Request, res: Response): Promise<void> => {
 
 export const remove = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { id }: DeleteTodoDto = { id: Number(req.query.id) };
+    const { id }: DeleteTodoDto = {
+      id: Number(req.query.id),
+    };
     const todo = await deleteTodo(id);
 
     res.status(200).json(todo);
