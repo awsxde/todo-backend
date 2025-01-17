@@ -91,7 +91,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\"title\": \"Buy groceries\"}"
+              "raw": "{\"title\": \"Buy groceries\", \"expiresAt\": \"2025-01-20T12:00:00Z\", \"status\": \"pending\"}"
             },
             "url": {
               "raw": "{{baseUrl}}/todos",
@@ -141,7 +141,7 @@
             ],
             "body": {
               "mode": "raw",
-              "raw": "{\"id\": 1, \"title\": \"Buy groceries and cook dinner\", \"completed\": true}"
+              "raw": "{\"id\": 1, \"title\": \"Buy groceries and cook dinner\", \"expiresAt\": \"2025-01-21T12:00:00Z\", \"status\": \"completed\"}"
             },
             "url": {
               "raw": "{{baseUrl}}/todos",

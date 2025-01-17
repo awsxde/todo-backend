@@ -11,14 +11,20 @@ import {
   getTodos,
   updateTodo,
 } from "../services/todo.service";
+import { validateTodoStatus } from "../utils/todo-validation.utils";
 
 export const create = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { userId, title }: CreateTodoDto = {
+    const { userId, title, expiresAt, status }: CreateTodoDto = {
       userId: req.userId!,
       title: req.body.title,
+      expiresAt: req.body.expiresAt,
+      status: req.body.status,
     };
-    const todo = await createTodo(userId, title);
+
+    validateTodoStatus(status);
+
+    const todo = await createTodo(userId, title, expiresAt, status);
 
     res.status(201).json(todo);
   } catch (error) {
@@ -42,8 +48,11 @@ export const list = async (req: Request, res: Response): Promise<void> => {
 
 export const update = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { id, completed, title }: UpdateTodoDto = req.body;
-    const todo = await updateTodo(id, completed, title);
+    const { id, title, expiresAt, status }: UpdateTodoDto = req.body;
+
+    validateTodoStatus(status);
+
+    const todo = await updateTodo(id, title, expiresAt, status);
 
     res.status(200).json(todo);
   } catch (error) {
