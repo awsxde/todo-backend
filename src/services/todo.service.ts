@@ -1,8 +1,13 @@
-import { prisma } from "../utils/prisma-client";
+import { prisma } from "../utils/prisma-client.utils";
 
-export const createTodo = async (userId: number, title: string) => {
+export const createTodo = async (
+  userId: number,
+  title: string,
+  expiresAt?: Date,
+  status?: string
+) => {
   return await prisma.todo.create({
-    data: { title, userId },
+    data: { title, userId, expiresAt, status: status || "pending" },
   });
 };
 
@@ -12,17 +17,17 @@ export const getTodos = async (userId: number) => {
 
 export const updateTodo = async (
   todoId: number,
-  userId: number,
-  completed: boolean,
-  title: string
+  title: string,
+  expiresAt?: Date,
+  status?: string
 ) => {
   return await prisma.todo.update({
     where: { id: todoId },
-    data: { title, completed },
+    data: { title, expiresAt, status },
   });
 };
 
-export const deleteTodo = async (todoId: number, userId: number) => {
+export const deleteTodo = async (todoId: number) => {
   return await prisma.todo.delete({
     where: { id: todoId },
   });
