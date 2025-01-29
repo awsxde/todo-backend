@@ -30,3 +30,9 @@ export const login = async (
     res.status(401).json({ message: (error as Error).message });
   }
 };
+
+export const logout = (req: Request, res: Response) => {
+  req.logout(() => {
+    res.json({ message: "Logged out successfully" });
+  });
+};
