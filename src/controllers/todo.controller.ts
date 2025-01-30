@@ -2,7 +2,7 @@ import { Request, Response } from "express";
 import {
   CreateTodoRequestDto,
   CreateTodoResponseDto,
-  DeleteTodoDto,
+  DeleteTodoRequestDto,
   ListTodoRequestDto,
   ListTodoResponseDto,
   UpdateTodoDto,
@@ -84,12 +84,12 @@ export const update = async (req: Request, res: Response): Promise<void> => {
 
 export const remove = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { id }: DeleteTodoDto = {
+    const requestDto: DeleteTodoRequestDto = {
       id: Number(req.query.id),
     };
-    const todo = await deleteTodo(id);
+    await deleteTodo(requestDto.id);
 
-    res.status(200).json(todo);
+    res.status(200).json(`todo with id ${requestDto.id} successfully deleted.`);
   } catch (error) {
     res.status(400).json({ message: (error as Error).message });
   }

@@ -26,6 +26,6 @@ export interface UpdateTodoDto {
   status?: string;
 }
 
-export interface DeleteTodoDto {
+export interface DeleteTodoRequestDto {
   id: number;
 }
