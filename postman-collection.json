@@ -50,24 +50,25 @@
               "path": ["auth", "login"]
             }
           },
-          "response": [],
-          "event": [
-            {
-              "listen": "test",
-              "script": {
-                "exec": [
-                  "let response = pm.response.json();",
-                  "if (response && response.token) {",
-                  "    pm.collectionVariables.set('token', response.token);",
-                  "    console.log('Token saved:', response.token);",
-                  "} else {",
-                  "    console.error('Token not found in response');",
-                  "}"
-                ],
-                "type": "text/javascript"
+          "response": []
+        },
+        {
+          "name": "Logout User",
+          "request": {
+            "method": "POST",
+            "header": [
+              {
+                "key": "Content-Type",
+                "value": "application/json"
               }
+            ],
+            "url": {
+              "raw": "{{baseUrl}}/auth/login",
+              "host": ["{{baseUrl}}"],
+              "path": ["auth", "logout"]
             }
-          ]
+          },
+          "response": []
         }
       ]
     },
