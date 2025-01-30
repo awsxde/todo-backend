@@ -1,17 +1,17 @@
 import { NextFunction, Request, Response } from "express";
 import {
-  LoginRequestDto,
-  LoginResponseDto,
-  RegisterRequestDto,
-  RegisterResponseDto,
+  LoginUserRequestDto,
+  LoginUserResponseDto,
+  RegisterUserRequestDto,
+  RegisterUserResponseDto,
 } from "../dtos/auth.dto";
 import { loginUser, registerUser } from "../services/auth.service";
 
 export const register = async (req: Request, res: Response): Promise<void> => {
   try {
-    const requestDto: RegisterRequestDto = req.body;
+    const requestDto: RegisterUserRequestDto = req.body;
     const user = await registerUser(requestDto.email, requestDto.password);
-    const responseDto: RegisterResponseDto = {
+    const responseDto: RegisterUserResponseDto = {
       id: user.id,
       email: user.email,
       createdAt: user.createdAt,
@@ -29,9 +29,9 @@ export const login = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    const requestDto: LoginRequestDto = req.body;
+    const requestDto: LoginUserRequestDto = req.body;
     const user = await loginUser(requestDto.email, requestDto.password);
-    const responseDto: LoginResponseDto = {
+    const responseDto: LoginUserResponseDto = {
       id: user.id,
       email: user.email,
       createdAt: user.createdAt.toISOString(),

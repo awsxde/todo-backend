@@ -1,20 +1,20 @@
-export interface RegisterRequestDto {
+export interface RegisterUserRequestDto {
   email: string;
   password: string;
 }
 
-export interface RegisterResponseDto {
+export interface RegisterUserResponseDto {
   id: number;
   email: string;
   createdAt: Date;
 }
 
-export interface LoginRequestDto {
+export interface LoginUserRequestDto {
   email: string;
   password: string;
 }
 
-export interface LoginResponseDto {
+export interface LoginUserResponseDto {
   id: number;
   email: string;
   createdAt: string;
