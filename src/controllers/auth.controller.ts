@@ -6,8 +6,13 @@ import {
   RegisterUserResponseDto,
 } from "../dtos/auth.dto";
 import { loginUser, registerUser } from "../services/auth.service";
+import logger from "../utils/logger.utils";
 
-export const register = async (req: Request, res: Response): Promise<void> => {
+export const register = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
   try {
     const requestDto: RegisterUserRequestDto = req.body;
     const user = await registerUser(requestDto.email, requestDto.password);
@@ -20,6 +25,8 @@ export const register = async (req: Request, res: Response): Promise<void> => {
     res.status(201).json(responseDto);
   } catch (error) {
     res.status(400).json({ message: (error as Error).message });
+    logger.error(`Register Failed: ${(error as Error).message}`);
+    next(error);
   }
 };
 
