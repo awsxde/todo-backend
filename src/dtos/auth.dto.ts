@@ -9,7 +9,13 @@ export interface RegisterResponseDto {
   createdAt: string;
 }
 
-export interface LoginUserDto {
+export interface LoginRequestDto {
   email: string;
   password: string;
+}
+
+export interface LoginResponseDto {
+  id: number;
+  email: string;
+  createdAt: string;
 }

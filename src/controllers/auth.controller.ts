@@ -1,6 +1,7 @@
 import { NextFunction, Request, Response } from "express";
 import {
-  LoginUserDto,
+  LoginRequestDto,
+  LoginResponseDto,
   RegisterRequestDto,
   RegisterResponseDto,
 } from "../dtos/auth.dto";
@@ -28,12 +29,17 @@ export const login = async (
   next: NextFunction
 ): Promise<void> => {
   try {
-    const { email, password }: LoginUserDto = req.body;
-    const user = await loginUser(email, password);
+    const requestDto: LoginRequestDto = req.body;
+    const user = await loginUser(requestDto.email, requestDto.password);
+    const responseDto: LoginResponseDto = {
+      id: user.id,
+      email: user.email,
+      createdAt: user.createdAt.toISOString(),
+    };
 
     req.logIn(user, async (loginErr) => {
       if (loginErr) return next(loginErr);
-      res.status(200).json(user);
+      res.status(200).json(responseDto);
     });
   } catch (error) {
     res.status(401).json({ message: (error as Error).message });
