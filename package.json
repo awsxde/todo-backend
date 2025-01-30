@@ -21,7 +21,8 @@
     "node-cron": "^3.0.3",
     "passport": "^0.7.0",
     "passport-local": "^1.0.0",
-    "prisma": "^6.3.0"
+    "prisma": "^6.3.0",
+    "winston": "^3.17.0"
   },
   "devDependencies": {
     "@types/bcryptjs": "^2.4.6",
