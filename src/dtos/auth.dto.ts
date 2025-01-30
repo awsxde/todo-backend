@@ -6,7 +6,7 @@ export interface RegisterRequestDto {
 export interface RegisterResponseDto {
   id: number;
   email: string;
-  createdAt: string;
+  createdAt: Date;
 }
 
 export interface LoginRequestDto {

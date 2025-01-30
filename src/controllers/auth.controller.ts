@@ -14,7 +14,7 @@ export const register = async (req: Request, res: Response): Promise<void> => {
     const responseDto: RegisterResponseDto = {
       id: user.id,
       email: user.email,
-      createdAt: user.createdAt.toISOString(),
+      createdAt: user.createdAt,
     };
 
     res.status(201).json(responseDto);
