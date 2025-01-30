@@ -1,8 +1,16 @@
-export interface CreateTodoDto {
+export interface CreateTodoRequestDto {
   userId: number;
   title: string;
   expiresAt?: Date;
   status?: string;
+}
+
+export interface CreateTodoResponseDto {
+  id: number;
+  title: string;
+  userId: number;
+  expiresAt: Date | null;
+  status: string | null;
 }
 
 export interface ListTodoDto {

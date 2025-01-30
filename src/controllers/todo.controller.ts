@@ -1,6 +1,7 @@
 import { Request, Response } from "express";
 import {
-  CreateTodoDto,
+  CreateTodoRequestDto,
+  CreateTodoResponseDto,
   DeleteTodoDto,
   ListTodoDto,
   UpdateTodoDto,
@@ -15,18 +16,31 @@ import { validateTodoStatus } from "../utils/todo-validation.utils";
 
 export const create = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { userId, title, expiresAt, status }: CreateTodoDto = {
+    const requestDto: CreateTodoRequestDto = {
       userId: req.userId!,
       title: req.body.title,
       expiresAt: req.body.expiresAt,
       status: req.body.status,
     };
 
-    validateTodoStatus(status);
+    validateTodoStatus(requestDto.status);
 
-    const todo = await createTodo(userId, title, expiresAt, status);
+    const todo = await createTodo(
+      requestDto.userId,
+      requestDto.title,
+      requestDto.expiresAt,
+      requestDto.status
+    );
 
-    res.status(201).json(todo);
+    const responseDto: CreateTodoResponseDto = {
+      id: todo.id,
+      title: todo.title,
+      userId: todo.userId,
+      expiresAt: todo.expiresAt,
+      status: todo.status,
+    };
+
+    res.status(201).json(responseDto);
   } catch (error) {
     const errorMessage = (error as Error).message;
     res.status(400).json({ message: errorMessage });
