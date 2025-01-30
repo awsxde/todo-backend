@@ -19,12 +19,14 @@ export interface ListTodoRequestDto {
 
 export type ListTodoResponseDto = CreateTodoResponseDto[];
 
-export interface UpdateTodoDto {
+export type UpdateTodoRequestDto = {
   id: number;
   title: string;
   expiresAt?: Date;
   status?: string;
-}
+};
+
+export type UpdateTodoResponseDto = CreateTodoResponseDto;
 
 export interface DeleteTodoRequestDto {
   id: number;

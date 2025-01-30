@@ -5,7 +5,8 @@ import {
   DeleteTodoRequestDto,
   ListTodoRequestDto,
   ListTodoResponseDto,
-  UpdateTodoDto,
+  UpdateTodoRequestDto,
+  UpdateTodoResponseDto,
 } from "../dtos/todo.dto";
 import {
   createTodo,
@@ -70,13 +71,26 @@ export const list = async (req: Request, res: Response): Promise<void> => {
 
 export const update = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { id, title, expiresAt, status }: UpdateTodoDto = req.body;
+    const requestDto: UpdateTodoRequestDto = req.body;
 
-    validateTodoStatus(status);
+    validateTodoStatus(requestDto.status);
 
-    const todo = await updateTodo(id, title, expiresAt, status);
+    const todo = await updateTodo(
+      requestDto.id,
+      requestDto.title,
+      requestDto.expiresAt,
+      requestDto.status
+    );
 
-    res.status(200).json(todo);
+    const responseDto: UpdateTodoResponseDto = {
+      id: todo.id,
+      title: todo.title,
+      userId: todo.userId,
+      expiresAt: todo.expiresAt,
+      status: todo.status,
+    };
+
+    res.status(200).json(responseDto);
   } catch (error) {
     res.status(400).json({ message: (error as Error).message });
   }
