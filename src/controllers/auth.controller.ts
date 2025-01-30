@@ -50,6 +50,8 @@ export const login = async (
     });
   } catch (error) {
     res.status(401).json({ message: (error as Error).message });
+    logger.error(`Login Failed: ${(error as Error).message}`);
+    next(error);
   }
 };
 
