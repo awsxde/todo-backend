@@ -13,9 +13,11 @@ export interface CreateTodoResponseDto {
   status: string | null;
 }
 
-export interface ListTodoDto {
+export interface ListTodoRequestDto {
   userId: number;
 }
+
+export type ListTodoResponseDto = CreateTodoResponseDto[];
 
 export interface UpdateTodoDto {
   id: number;
