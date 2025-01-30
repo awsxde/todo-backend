@@ -1,13 +1,22 @@
 import { NextFunction, Request, Response } from "express";
-import { LoginUserDto, RegisterUserDto } from "../dtos/auth.dto";
+import {
+  LoginUserDto,
+  RegisterRequestDto,
+  RegisterResponseDto,
+} from "../dtos/auth.dto";
 import { loginUser, registerUser } from "../services/auth.service";
 
 export const register = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { email, password }: RegisterUserDto = req.body;
-    const user = await registerUser(email, password);
+    const requestDto: RegisterRequestDto = req.body;
+    const user = await registerUser(requestDto.email, requestDto.password);
+    const responseDto: RegisterResponseDto = {
+      id: user.id,
+      email: user.email,
+      createdAt: user.createdAt.toISOString(),
+    };
 
-    res.status(201).json(user);
+    res.status(201).json(responseDto);
   } catch (error) {
     res.status(400).json({ message: (error as Error).message });
   }
