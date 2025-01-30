@@ -1,9 +1,12 @@
 import { Request, Response } from "express";
 import {
-  CreateTodoDto,
-  DeleteTodoDto,
-  ListTodoDto,
-  UpdateTodoDto,
+  CreateTodoRequestDto,
+  CreateTodoResponseDto,
+  DeleteTodoRequestDto,
+  ListTodoRequestDto,
+  ListTodoResponseDto,
+  UpdateTodoRequestDto,
+  UpdateTodoResponseDto,
 } from "../dtos/todo.dto";
 import {
   createTodo,
@@ -15,18 +18,31 @@ import { validateTodoStatus } from "../utils/todo-validation.utils";
 
 export const create = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { userId, title, expiresAt, status }: CreateTodoDto = {
+    const requestDto: CreateTodoRequestDto = {
       userId: req.userId!,
       title: req.body.title,
       expiresAt: req.body.expiresAt,
       status: req.body.status,
     };
 
-    validateTodoStatus(status);
+    validateTodoStatus(requestDto.status);
 
-    const todo = await createTodo(userId, title, expiresAt, status);
+    const todo = await createTodo(
+      requestDto.userId,
+      requestDto.title,
+      requestDto.expiresAt,
+      requestDto.status
+    );
 
-    res.status(201).json(todo);
+    const responseDto: CreateTodoResponseDto = {
+      id: todo.id,
+      title: todo.title,
+      userId: todo.userId,
+      expiresAt: todo.expiresAt,
+      status: todo.status,
+    };
+
+    res.status(201).json(responseDto);
   } catch (error) {
     const errorMessage = (error as Error).message;
     res.status(400).json({ message: errorMessage });
@@ -35,12 +51,19 @@ export const create = async (req: Request, res: Response): Promise<void> => {
 
 export const list = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { userId }: ListTodoDto = {
+    const requestDto: ListTodoRequestDto = {
       userId: req.userId!,
     };
-    const todos = await getTodos(userId);
+    const todos = await getTodos(requestDto.userId);
+    const responseDto: ListTodoResponseDto = todos.map((todo) => ({
+      id: todo.id,
+      title: todo.title,
+      userId: todo.userId,
+      expiresAt: todo.expiresAt,
+      status: todo.status,
+    }));
 
-    res.status(200).json(todos);
+    res.status(200).json(responseDto);
   } catch (error) {
     res.status(400).json({ message: (error as Error).message });
   }
@@ -48,13 +71,26 @@ export const list = async (req: Request, res: Response): Promise<void> => {
 
 export const update = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { id, title, expiresAt, status }: UpdateTodoDto = req.body;
+    const requestDto: UpdateTodoRequestDto = req.body;
 
-    validateTodoStatus(status);
+    validateTodoStatus(requestDto.status);
 
-    const todo = await updateTodo(id, title, expiresAt, status);
+    const todo = await updateTodo(
+      requestDto.id,
+      requestDto.title,
+      requestDto.expiresAt,
+      requestDto.status
+    );
 
-    res.status(200).json(todo);
+    const responseDto: UpdateTodoResponseDto = {
+      id: todo.id,
+      title: todo.title,
+      userId: todo.userId,
+      expiresAt: todo.expiresAt,
+      status: todo.status,
+    };
+
+    res.status(200).json(responseDto);
   } catch (error) {
     res.status(400).json({ message: (error as Error).message });
   }
@@ -62,12 +98,12 @@ export const update = async (req: Request, res: Response): Promise<void> => {
 
 export const remove = async (req: Request, res: Response): Promise<void> => {
   try {
-    const { id }: DeleteTodoDto = {
+    const requestDto: DeleteTodoRequestDto = {
       id: Number(req.query.id),
     };
-    const todo = await deleteTodo(id);
+    await deleteTodo(requestDto.id);
 
-    res.status(200).json(todo);
+    res.status(200).json(`todo with id ${requestDto.id} successfully deleted.`);
   } catch (error) {
     res.status(400).json({ message: (error as Error).message });
   }
