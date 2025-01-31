@@ -21,6 +21,14 @@ export const updateTodo = async (
   expiresAt?: Date,
   status?: string
 ) => {
+  const existingTodo = await prisma.todo.findUnique({
+    where: { id: todoId },
+  });
+
+  if (!existingTodo) {
+    throw createError("Todo with the given ID not found", 404); // Throw an error if the todoId is invalid
+  }
+
   return await prisma.todo.update({
     where: { id: todoId },
     data: { title, expiresAt, status },
