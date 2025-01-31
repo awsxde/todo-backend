@@ -36,7 +36,11 @@ export const login = catchAsync(
       createdAt: user.createdAt.toISOString(),
     };
 
-    res.status(200).json(responseDto);
+    req.logIn(user, async (err) => {
+      if (err) next(createError("Login failed", 401));
+
+      res.status(200).json(responseDto);
+    });
   }
 );
 
