@@ -7,7 +7,11 @@ import {
 } from "../dtos/auth.dto";
 import { loginUser, registerUser } from "../services/auth.service";
 
-export const register = async (req: Request, res: Response): Promise<void> => {
+export const register = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
   try {
     const requestDto: RegisterUserRequestDto = req.body;
     const user = await registerUser(requestDto.email, requestDto.password);
@@ -46,8 +50,16 @@ export const login = async (
   }
 };
 
-export const logout = (req: Request, res: Response) => {
-  req.logout(() => {
-    res.json({ message: "Logged out successfully" });
-  });
+export const logout = async (
+  req: Request,
+  res: Response,
+  next: NextFunction
+): Promise<void> => {
+  try {
+    req.logout(() => {
+      res.json({ message: "Logged out successfully" });
+    });
+  } catch (error) {
+    res.status(400).json({ message: (error as Error).message });
+  }
 };
