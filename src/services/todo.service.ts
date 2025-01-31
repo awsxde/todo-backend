@@ -1,3 +1,4 @@
+import { createError } from "../utils/create-error";
 import { prisma } from "../utils/prisma-client.utils";
 
 export const createTodo = async (
@@ -36,6 +37,14 @@ export const updateTodo = async (
 };
 
 export const deleteTodo = async (todoId: number) => {
+  const existingTodo = await prisma.todo.findUnique({
+    where: { id: todoId },
+  });
+
+  if (!existingTodo) {
+    throw createError("Todo with the given ID not found", 404); // Throw an error if the todoId is invalid
+  }
+
   await prisma.todo.delete({
     where: { id: todoId },
   });
