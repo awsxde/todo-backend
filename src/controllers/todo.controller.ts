@@ -1,4 +1,4 @@
-import { Request, Response } from "express";
+import { NextFunction, Request, Response } from "express";
 import {
   CreateTodoRequestDto,
   CreateTodoResponseDto,
@@ -14,10 +14,11 @@ import {
   getTodos,
   updateTodo,
 } from "../services/todo.service";
+import catchAsync from "../utils/catch-async";
 import { validateTodoStatus } from "../utils/todo-validation.utils";
 
-export const create = async (req: Request, res: Response): Promise<void> => {
-  try {
+export const create = catchAsync(
+  async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const requestDto: CreateTodoRequestDto = {
       userId: req.userId!,
       title: req.body.title,
@@ -43,14 +44,11 @@ export const create = async (req: Request, res: Response): Promise<void> => {
     };
 
     res.status(201).json(responseDto);
-  } catch (error) {
-    const errorMessage = (error as Error).message;
-    res.status(400).json({ message: errorMessage });
   }
-};
+);
 
-export const list = async (req: Request, res: Response): Promise<void> => {
-  try {
+export const list = catchAsync(
+  async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const requestDto: ListTodoRequestDto = {
       userId: req.userId!,
     };
@@ -64,13 +62,11 @@ export const list = async (req: Request, res: Response): Promise<void> => {
     }));
 
     res.status(200).json(responseDto);
-  } catch (error) {
-    res.status(400).json({ message: (error as Error).message });
   }
-};
+);
 
-export const update = async (req: Request, res: Response): Promise<void> => {
-  try {
+export const update = catchAsync(
+  async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const requestDto: UpdateTodoRequestDto = req.body;
 
     validateTodoStatus(requestDto.status);
@@ -91,20 +87,16 @@ export const update = async (req: Request, res: Response): Promise<void> => {
     };
 
     res.status(200).json(responseDto);
-  } catch (error) {
-    res.status(400).json({ message: (error as Error).message });
   }
-};
+);
 
-export const remove = async (req: Request, res: Response): Promise<void> => {
-  try {
+export const remove = catchAsync(
+  async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const requestDto: DeleteTodoRequestDto = {
       id: Number(req.query.id),
     };
     await deleteTodo(requestDto.id);
 
     res.status(200).json(`todo with id ${requestDto.id} successfully deleted.`);
-  } catch (error) {
-    res.status(400).json({ message: (error as Error).message });
   }
-};
+);
