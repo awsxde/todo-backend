@@ -6,7 +6,6 @@ import {
   RegisterUserResponseDto,
 } from "../dtos/auth.dto";
 import { loginUser, registerUser } from "../services/auth.service";
-import logger from "../utils/logger.utils";
 
 export const register = async (
   req: Request,
@@ -25,8 +24,6 @@ export const register = async (
     res.status(201).json(responseDto);
   } catch (error) {
     res.status(400).json({ message: (error as Error).message });
-    logger.error(`Register Failed: ${(error as Error).message}`);
-    next(error);
   }
 };
 
@@ -50,8 +47,6 @@ export const login = async (
     });
   } catch (error) {
     res.status(401).json({ message: (error as Error).message });
-    logger.error(`Login Failed: ${(error as Error).message}`);
-    next(error);
   }
 };
 
@@ -66,7 +61,5 @@ export const logout = async (
     });
   } catch (error) {
     res.status(400).json({ message: (error as Error).message });
-    logger.error(`Logout Failed: ${(error as Error).message}`);
-    next(error);
   }
 };
