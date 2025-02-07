@@ -6,13 +6,11 @@ import {
   RegisterUserResponseDto,
 } from "../dtos/auth.dto";
 import { loginUser, registerUser } from "../services/auth.service";
+import { catchAsync } from "../utils/catch-async";
+import { createError } from "../utils/create-error";
 
-export const register = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-): Promise<void> => {
-  try {
+export const register = catchAsync(
+  async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const requestDto: RegisterUserRequestDto = req.body;
     const user = await registerUser(requestDto.email, requestDto.password);
     const responseDto: RegisterUserResponseDto = {
@@ -22,44 +20,34 @@ export const register = async (
     };
 
     res.status(201).json(responseDto);
-  } catch (error) {
-    res.status(400).json({ message: (error as Error).message });
   }
-};
+);
 
-export const login = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-): Promise<void> => {
-  try {
+export const login = catchAsync(
+  async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     const requestDto: LoginUserRequestDto = req.body;
     const user = await loginUser(requestDto.email, requestDto.password);
+
+    if (!user) next(createError("Invalid email or password", 401));
+
     const responseDto: LoginUserResponseDto = {
       id: user.id,
       email: user.email,
       createdAt: user.createdAt.toISOString(),
     };
 
-    req.logIn(user, async (loginErr) => {
-      if (loginErr) return next(loginErr);
+    req.logIn(user, async (err) => {
+      if (err) next(createError("Login failed", 401));
+
       res.status(200).json(responseDto);
     });
-  } catch (error) {
-    res.status(401).json({ message: (error as Error).message });
   }
-};
+);
 
-export const logout = async (
-  req: Request,
-  res: Response,
-  next: NextFunction
-): Promise<void> => {
-  try {
+export const logout = catchAsync(
+  async (req: Request, res: Response, next: NextFunction): Promise<void> => {
     req.logout(() => {
       res.json({ message: "Logged out successfully" });
     });
-  } catch (error) {
-    res.status(400).json({ message: (error as Error).message });
   }
-};
+);
