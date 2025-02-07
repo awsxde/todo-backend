@@ -6,7 +6,7 @@ import {
   RegisterUserResponseDto,
 } from "../dtos/auth.dto";
 import { loginUser, registerUser } from "../services/auth.service";
-import catchAsync from "../utils/catch-async";
+import { catchAsync } from "../utils/catch-async";
 import { createError } from "../utils/create-error";
 
 export const register = catchAsync(

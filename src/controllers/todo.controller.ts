@@ -14,7 +14,7 @@ import {
   getTodos,
   updateTodo,
 } from "../services/todo.service";
-import catchAsync from "../utils/catch-async";
+import { catchAsync } from "../utils/catch-async";
 import { validateTodoStatus } from "../utils/todo-validation.utils";
 
 export const create = catchAsync(

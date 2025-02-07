@@ -1,4 +1,4 @@
-import logger from "./logger.utils";
+import { logger } from "./logger.utils";
 
 export const createError = (message: string, statusCode: number) => {
   logger.error(`Error: ${message} | StatusCode: ${statusCode}`);
